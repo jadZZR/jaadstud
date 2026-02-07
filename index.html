@@ -58,23 +58,16 @@
         @keyframes pulseLogo { from { text-shadow: 0 0 10px rgba(216,180,254,0); } to { text-shadow: 0 0 20px rgba(216,180,254,0.5); } }
         .loaded #loader { opacity: 0; visibility: hidden; }
 
-        /* --- BACKGROUND VIVANT --- */
-        .noise {
-            position: fixed; inset: 0; pointer-events: none; z-index: 9998; opacity: 0.05;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-            animation: noiseAnim 0.5s infinite linear;
-        }
-        @keyframes noiseAnim { 0% { transform: translate(0,0); } 100% { transform: translate(-10%,-10%); } }
-
+        /* --- BACKGROUND --- */
         .grid-lines {
             position: fixed; inset: 0; z-index: -1; pointer-events: none;
-            display: flex; justify-content: space-between; padding: 0 5%; opacity: 0.3;
+            display: flex; justify-content: space-between; padding: 0 5%; opacity: 0.2;
         }
         .line { width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent); }
 
         #stars-container { 
             position: fixed; inset: -50%; width: 200%; height: 200%; z-index: -3; pointer-events: none;
-            animation: rotateSpace 200s linear infinite; /* Rotation lente de tout l'espace */
+            animation: rotateSpace 200s linear infinite;
         }
         @keyframes rotateSpace { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
@@ -84,14 +77,13 @@
         }
         @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.5); } }
 
-        /* Nébuleuse avec Parallaxe JS */
         #nebula-layer {
             position: fixed; inset: -20%; width: 140%; height: 140%; z-index: -2; pointer-events: none;
             background: 
-                radial-gradient(circle at 30% 40%, rgba(216, 180, 254, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(100, 200, 255, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 30% 40%, rgba(216, 180, 254, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(100, 200, 255, 0.03) 0%, transparent 50%);
             filter: blur(80px);
-            transition: transform 0.1s linear; /* Pour la fluidité du parallaxe */
+            transition: transform 0.1s linear;
         }
 
         /* --- CURSEUR --- */
@@ -136,7 +128,7 @@
         #expertise > * { pointer-events: auto; }
 
         .spline-full { position: absolute; inset: 0; z-index: 0; }
-        .spline-full iframe { width: 100%; height: 100%; border: none; }
+        .spline-full iframe { width: 100%; height: 100%; border: none; background: transparent; }
 
         .content-wrap {
             position: relative; z-index: 10; padding: 0 10%;
@@ -167,7 +159,7 @@
         .tilt-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 20px 25px; border-radius: 12px; backdrop-filter: blur(10px);
-            transition: transform 0.1s ease-out; /* Important pour la fluidité JS */
+            transition: transform 0.1s ease-out;
             transform-style: preserve-3d;
             perspective: 1000px;
         }
@@ -203,7 +195,7 @@
         }
         .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 50px; }
         .social-icons {
-            display: flex; gap: 15px; /* Ajout du flex et gap pour l'alignement horizontal */
+            display: flex; gap: 15px; 
         }
         .social-btn {
             width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
@@ -245,8 +237,7 @@
         <div class="loader-logo">JAAD</div>
     </div>
 
-    <!-- TEXTURES & BACKGROUNDS -->
-    <div class="noise"></div>
+    <!-- BACKGROUNDS -->
     <div class="grid-lines"><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
     
     <div id="stars-container"></div>
