@@ -5,38 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAAD | Digital Experience</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- FONTS --- */
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Outfit:wght@200;300;400;500;700&display=swap');
 
         :root {
             --accent: #d8b4fe;
-            --accent-glow: rgba(216, 180, 254, 0.5);
             --bg: #030305;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.08);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-
         html { scroll-behavior: smooth; }
-
-        body {
-            background-color: var(--bg);
-            color: #ffffff;
-            font-family: 'Outfit', sans-serif;
-            overflow-x: hidden;
-            font-weight: 300;
-        }
-
-        /* --- SCROLL PROGRESS BAR --- */
-        #progress-bar {
-            position: fixed; top: 0; left: 0; height: 3px; background: var(--accent);
-            width: 0%; z-index: 20001; box-shadow: 0 0 15px var(--accent);
-            transition: width 0.1s;
-        }
+        body { background-color: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; overflow-x: hidden; }
 
         /* --- LOADER --- */
         #loader {
@@ -58,94 +40,82 @@
         @keyframes pulseLogo { from { text-shadow: 0 0 10px rgba(216,180,254,0); } to { text-shadow: 0 0 20px rgba(216,180,254,0.5); } }
         .loaded #loader { opacity: 0; visibility: hidden; }
 
-        /* --- BACKGROUND --- */
-        .grid-lines {
-            position: fixed; inset: 0; z-index: -1; pointer-events: none;
-            display: flex; justify-content: space-between; padding: 0 5%; opacity: 0.2;
-        }
-        .line { width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent); }
-
-        #stars-container { 
-            position: fixed; inset: -50%; width: 200%; height: 200%; z-index: -3; pointer-events: none;
-            animation: rotateSpace 200s linear infinite;
-        }
-        @keyframes rotateSpace { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        .star {
-            position: absolute; background: white; border-radius: 50%; opacity: 0;
-            animation: twinkle var(--duration) ease-in-out infinite alternate;
-        }
-        @keyframes twinkle { 0% { opacity: 0.2; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.5); } }
-
-        #nebula-layer {
-            position: fixed; inset: -20%; width: 140%; height: 140%; z-index: -2; pointer-events: none;
-            background: 
-                radial-gradient(circle at 30% 40%, rgba(216, 180, 254, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(100, 200, 255, 0.03) 0%, transparent 50%);
-            filter: blur(80px);
-            transition: transform 0.1s linear;
+        /* --- LAYOUT SYSTEM (GRID) --- */
+        .split-section {
+            min-height: 100vh;
+            width: 100vw;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* --- CURSEUR --- */
-        .cursor-dot {
-            width: 6px; height: 6px; background: white; position: fixed; border-radius: 50%;
-            pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
+        .col-text {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 0 8%; position: relative; z-index: 10;
+            background: rgba(3, 3, 5, 0.4);
         }
-        .cursor-outline {
-            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); position: fixed;
-            border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background-color 0.2s, transform 0.1s;
+
+        .col-3d {
+            position: relative; width: 100%; height: 100%; overflow: hidden;
         }
-        body.hovering .cursor-outline { width: 70px; height: 70px; border-color: var(--accent); background: rgba(255,255,255,0.02); }
-        body.hovering .cursor-dot { background: var(--accent); }
+
+        .col-3d iframe {
+            width: 100%; height: 100%; border: none;
+            display: block; /* Évite les espaces fantômes */
+        }
+
+        /* --- ACCUEIL --- */
+        #accueil {
+            height: 100vh; width: 100vw; position: relative; display: block;
+        }
+        .full-spline { width: 100%; height: 100%; }
+        .full-spline iframe { width: 100%; height: 100%; border: none; }
 
         /* --- NAVIGATION --- */
         nav {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 1000;
-            background: rgba(10, 10, 12, 0.6); backdrop-filter: blur(25px);
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 10000;
+            background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(20px);
             border: 1px solid var(--border); padding: 10px 30px; border-radius: 100px;
             display: flex; align-items: center; justify-content: space-between; gap: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-width: 350px;
+            min-width: 350px; transition: 0.3s;
         }
         .logo { font-family: 'Syncopate'; font-weight: 700; color: white; letter-spacing: 2px; }
         .nav-links { display: flex; gap: 8px; }
         .nav-link {
             color: rgba(255,255,255,0.6); padding: 8px 20px; border-radius: 50px;
             font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500;
-            transition: 0.3s; position: relative;
+            transition: 0.3s;
         }
-        .nav-link:hover { color: white; background: rgba(255,255,255,0.05); }
-        .nav-link.active { color: #000; background: white; font-weight: 700; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
-        .hamburger { display: none; color: white; font-size: 1.5rem; cursor: pointer; }
-
-        /* --- LAYOUT --- */
-        section {
-            min-height: 100vh; width: 100%; display: grid; grid-template-columns: 1fr 1fr;
-            overflow: hidden; position: relative; padding-top: 0;
-        }
-        #accueil { display: block; height: 100vh; }
-        #expertise { margin-top: -15vh; padding-top: 15vh; pointer-events: none; }
-        #expertise > * { pointer-events: auto; }
-
-        .spline-full { position: absolute; inset: 0; z-index: 0; }
-        .spline-full iframe { width: 100%; height: 100%; border: none; background: transparent; }
-
-        .content-wrap {
-            position: relative; z-index: 10; padding: 0 10%;
-            display: flex; flex-direction: column; justify-content: center;
-        }
+        .nav-link:hover { color: white; background: rgba(255,255,255,0.1); }
+        .nav-link.active { color: #000; background: white; font-weight: 700; }
         
+        .hamburger { 
+            display: none; color: white; font-size: 1.5rem; cursor: pointer; 
+            width: 30px; text-align: center;
+        }
+
+        /* --- EXPERTISE OVERLAP FIX --- */
+        #expertise {
+            margin-top: -10vh; /* Chevauchement fluide */
+            z-index: 20; /* Passe au-dessus de l'accueil */
+            background: linear-gradient(to bottom, transparent, var(--bg) 15%);
+            pointer-events: none; /* Laisse cliquer le robot si besoin */
+        }
+        #expertise > * { pointer-events: auto; } /* Réactive les clics sur le contenu */
+
+        /* --- TYPOGRAPHIE & UI --- */
         .big-title {
-            font-family: 'Syncopate'; font-size: clamp(2.5rem, 4vw, 5rem); font-weight: 700;
-            line-height: 1; margin-bottom: 1.5rem; color: white;
+            font-family: 'Syncopate'; font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 700;
+            line-height: 1.1; margin-bottom: 1.5rem; color: white;
         }
         .outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
-        .description { font-size: 1.1rem; color: #a0a0a0; line-height: 1.6; margin-bottom: 2.5rem; max-width: 500px; }
+        .description { font-size: 1.1rem; color: #a0a0a0; line-height: 1.6; margin-bottom: 2.5rem; max-width: 550px; }
 
         .tag-row { display: flex; gap: 10px; margin-bottom: 30px; }
         .tag {
             font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; padding: 6px 14px;
-            border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; color: #888;
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; color: #ccc;
         }
 
         .btn-minimal {
@@ -155,29 +125,16 @@
         }
         .btn-minimal:hover { border-color: var(--accent); color: var(--accent); gap: 25px; }
 
-        /* --- TILT CARDS --- */
         .tilt-card {
             background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px 25px; border-radius: 12px; backdrop-filter: blur(10px);
-            transition: transform 0.1s ease-out;
-            transform-style: preserve-3d;
-            perspective: 1000px;
+            padding: 20px; border-radius: 8px; transition: 0.3s;
         }
-        .tilt-card:hover { border-color: var(--accent); box-shadow: 0 10px 40px rgba(216, 180, 254, 0.1); background: rgba(255, 255, 255, 0.06); }
-        
-        .feature-icon { font-size: 1.2rem; color: var(--accent); }
-        .feature-title { font-family: 'Syncopate'; font-size: 0.85rem; font-weight: 700; margin-bottom: 3px; color: white; }
+        .tilt-card:hover { border-color: var(--accent); background: rgba(255, 255, 255, 0.06); }
+        .feature-title { font-family: 'Syncopate'; font-size: 0.8rem; font-weight: 700; color: white; margin-bottom: 5px; }
         .feature-desc { font-size: 0.75rem; color: #999; }
 
-        /* --- CONTACT --- */
-        #contact { display: flex; align-items: center; justify-content: center; }
-        .form-card {
-            background: rgba(15, 15, 20, 0.6); backdrop-filter: blur(30px); border: 1px solid var(--border);
-            padding: 60px; width: 100%; max-width: 600px; border-radius: 20px;
-            transform-style: preserve-3d;
-        }
         .clean-input {
-            width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
             padding: 15px 0; color: white; font-family: 'Outfit'; font-size: 1.1rem; margin-bottom: 30px;
             transition: 0.3s;
         }
@@ -189,65 +146,50 @@
         }
         .btn-send:hover { background: var(--accent); letter-spacing: 8px; }
 
-        /* --- FOOTER --- */
-        footer {
-            background: #020202; border-top: 1px solid rgba(255,255,255,0.05); padding: 80px 8%; position: relative; z-index: 10;
-        }
-        .footer-content { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 50px; }
-        .social-icons {
-            display: flex; gap: 15px; 
-        }
-        .social-btn {
-            width: 45px; height: 45px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center; color: white; transition: 0.3s;
-        }
-        .social-btn:hover { background: var(--accent); color: black; border-color: var(--accent); transform: scale(1.1); }
+        /* --- DECORATION --- */
+        #stars-container { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+        .star { position: absolute; background: white; border-radius: 50%; width: 2px; height: 2px; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
         
-        /* Mobile */
+        .cursor-dot { width: 8px; height: 8px; background: white; position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.3); position: fixed; border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: all 0.1s ease-out; }
+
+        /* --- MOBILE --- */
         #mobile-menu {
-            position: fixed; inset: 0; background: #050505; z-index: 999;
+            position: fixed; inset: 0; background: #050505; z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 30px;
-            transform: translateY(-100%); transition: 0.5s cubic-bezier(0.7,0,0.3,1);
+            transform: translateY(-100%); transition: 0.5s;
         }
         #mobile-menu.open { transform: translateY(0); }
-        .mobile-link { font-family: 'Syncopate'; font-size: 1.8rem; color: white; opacity: 0; transform: translateY(20px); transition: 0.4s; }
-        #mobile-menu.open .mobile-link { opacity: 1; transform: translateY(0); }
+        .mobile-link { font-family: 'Syncopate'; font-size: 1.8rem; color: white; opacity: 0; transition: 0.3s; }
+        #mobile-menu.open .mobile-link { opacity: 1; }
 
         @media (max-width: 1024px) {
             .nav-links { display: none; } .hamburger { display: block; }
-            section { grid-template-columns: 1fr; }
-            #expertise { margin-top: 0; background: var(--bg); padding-top: 50px; flex-direction: column-reverse; display: flex; }
-            #projets { flex-direction: column; display: flex; }
-            .content-wrap { padding: 60px 20px; text-align: center; align-items: center; order: 2; }
-            .col-3d { height: 50vh; width: 100%; order: 1; }
+            .split-section { grid-template-columns: 1fr; height: auto; }
+            #accueil { height: 100vh; }
+            #expertise { margin-top: 0; padding-top: 50px; background: var(--bg); }
+            .col-text { padding: 60px 20px; order: 1; text-align: center; align-items: center; }
+            .col-3d { height: 50vh; width: 100%; order: 2; }
             .tag-row { justify-content: center; }
-            .form-card { padding: 30px; border: none; background: transparent; }
-            .footer-content { flex-direction: column; text-align: center; align-items: center; }
             * { cursor: auto !important; } .cursor-dot, .cursor-outline { display: none; }
+            footer { padding: 40px 20px; text-align: center; }
+            .footer-content { flex-direction: column; gap: 30px; }
+            .social-icons { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <!-- PROGRESS BAR -->
-    <div id="progress-bar"></div>
-
     <!-- LOADER -->
-    <div id="loader">
-        <div class="loader-logo">JAAD</div>
-    </div>
+    <div id="loader"><div class="loader-logo">JAAD</div></div>
 
-    <!-- BACKGROUNDS -->
-    <div class="grid-lines"><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
-    
+    <!-- BACKGROUND -->
     <div id="stars-container"></div>
-    <div id="nebula-layer"></div>
-
-    <!-- CURSOR -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- NAVIGATION -->
+    <!-- NAV -->
     <nav>
         <a href="#accueil" class="logo hover-trigger">JAAD</a>
         <div class="nav-links">
@@ -256,94 +198,90 @@
             <a href="#projets" class="nav-link hover-trigger">Projets</a>
             <a href="#contact" class="nav-link hover-trigger">Contact</a>
         </div>
-        <div class="hamburger hover-trigger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        <!-- Hamburger Icon -->
+        <div class="hamburger hover-trigger" onclick="toggleMenu()">
+            <i class="fas fa-bars" id="menu-icon"></i>
+        </div>
     </nav>
 
     <!-- MOBILE MENU -->
     <div id="mobile-menu">
-        <a href="#accueil" class="mobile-link" onclick="toggleMenu()" style="transition-delay: 0.1s">ACCUEIL</a>
-        <a href="#expertise" class="mobile-link" onclick="toggleMenu()" style="transition-delay: 0.2s">EXPERTISE</a>
-        <a href="#projets" class="mobile-link" onclick="toggleMenu()" style="transition-delay: 0.3s">PROJETS</a>
-        <a href="#contact" class="mobile-link" onclick="toggleMenu()" style="transition-delay: 0.4s">CONTACT</a>
-        <div class="hamburger" onclick="toggleMenu()" style="position: absolute; top: 30px; right: 30px;"><i class="fas fa-times"></i></div>
+        <a href="#accueil" class="mobile-link" onclick="toggleMenu()">ACCUEIL</a>
+        <a href="#expertise" class="mobile-link" onclick="toggleMenu()">EXPERTISE</a>
+        <a href="#projets" class="mobile-link" onclick="toggleMenu()">PROJETS</a>
+        <a href="#contact" class="mobile-link" onclick="toggleMenu()">CONTACT</a>
     </div>
 
-    <!-- 1. ACCUEIL -->
+    <!-- 1. ACCUEIL (FULL) -->
     <section id="accueil">
-        <div class="spline-full">
+        <div class="full-spline">
             <iframe src="https://my.spline.design/r4xbot-wyF3YgMCHK0WZiM5WExlbOBt/" loading="eager"></iframe>
         </div>
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50 animate-bounce pointer-events-none">
             <span class="text-[10px] tracking-[0.3em] uppercase">Scroll</span>
             <div class="w-[1px] h-10 bg-gradient-to-b from-white to-transparent"></div>
         </div>
     </section>
 
-    <!-- 2. EXPERTISE -->
-    <section id="expertise">
-        <div class="content-wrap">
+    <!-- 2. EXPERTISE (SPLIT: TEXTE GAUCHE / 3D DROITE) -->
+    <section id="expertise" class="split-section">
+        <div class="col-text">
             <div class="tag-row">
-                <span class="tag">Sites Web</span>
+                <span class="tag">Web</span>
                 <span class="tag">Mobile</span>
                 <span class="tag">E-Learning</span>
             </div>
             <h2 class="big-title">Expertise<br><span class="outline">Augmentée</span></h2>
             <p class="description">
-                Fusionner l'excellence technique et le design interactif pour créer des écosystèmes digitaux vivants. 
-                L'interface devient une extension naturelle de votre marque.
+                Nous concevons des écosystèmes digitaux où la technique sert l'émotion. 
+                Une approche holistique pour des interfaces vivantes et performantes.
             </p>
             
             <div class="flex flex-col gap-3 mb-8 w-full max-w-md">
-                <!-- Service 1 -->
-                <div class="tilt-card hover-trigger flex items-center gap-5" data-tilt>
+                <div class="tilt-card flex items-center gap-5 hover-trigger">
                     <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-accent shrink-0">
-                        <i class="fas fa-globe feature-icon"></i>
+                        <i class="fas fa-globe"></i>
                     </div>
                     <div>
                         <div class="feature-title">SITES INTERNET</div>
-                        <div class="feature-desc">Vitrines & E-commerce 3D</div>
+                        <div class="feature-desc">Vitrines immersives & E-commerce 3D</div>
                     </div>
                 </div>
-                
-                <!-- Service 2 -->
-                <div class="tilt-card hover-trigger flex items-center gap-5" data-tilt>
+                <div class="tilt-card flex items-center gap-5 hover-trigger">
                     <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-accent shrink-0">
-                        <i class="fas fa-mobile-screen feature-icon"></i>
+                        <i class="fas fa-mobile-screen"></i>
                     </div>
                     <div>
                         <div class="feature-title">APPLICATIONS MOBILES</div>
                         <div class="feature-desc">iOS, Android & PWA Natives</div>
                     </div>
                 </div>
-
-                <!-- Service 3 -->
-                <div class="tilt-card hover-trigger flex items-center gap-5" data-tilt>
+                <div class="tilt-card flex items-center gap-5 hover-trigger">
                     <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-accent shrink-0">
-                        <i class="fas fa-graduation-cap feature-icon"></i>
+                        <i class="fas fa-graduation-cap"></i>
                     </div>
                     <div>
                         <div class="feature-title">E-LEARNING</div>
-                        <div class="feature-desc">Plateformes Éducatives Immersives</div>
+                        <div class="feature-desc">Plateformes Éducatives Interactives</div>
                     </div>
                 </div>
             </div>
 
-            <a href="#contact" class="btn-minimal hover-trigger">
-                DÉCOUVRIR <span class="ml-2">→</span>
-            </a>
+            <a href="#contact" class="btn-minimal hover-trigger">DÉCOUVRIR <span class="ml-2">→</span></a>
         </div>
+        
         <div class="col-3d">
             <iframe src="https://my.spline.design/cybernetichuman-nI90EsLfNyyP8sufimXsJIxo/" loading="lazy"></iframe>
         </div>
     </section>
 
-    <!-- 3. PROJETS -->
-    <section id="projets">
+    <!-- 3. PROJETS (SPLIT: 3D GAUCHE / TEXTE DROITE) -->
+    <section id="projets" class="split-section">
         <div class="col-3d">
             <iframe src="https://my.spline.design/iphone14procopy-wRetFGobgtGUtHIgPh3XtB7o/" loading="lazy"></iframe>
         </div>
         
-        <div class="content-wrap">
+        <div class="col-text">
             <div class="tag-row">
                 <span class="tag">iOS</span>
                 <span class="tag">Android</span>
@@ -355,141 +293,100 @@
             </p>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mb-8">
-                <div class="tilt-card hover-trigger" data-tilt>
+                <div class="tilt-card hover-trigger">
                     <div class="feature-title">NEO BANK</div>
                     <div class="feature-desc">Fintech 3D App</div>
                 </div>
-                <div class="tilt-card hover-trigger" data-tilt>
+                <div class="tilt-card hover-trigger">
                     <div class="feature-title">LUXURY AR</div>
                     <div class="feature-desc">E-commerce Augmenté</div>
                 </div>
             </div>
 
-            <a href="#contact" class="btn-minimal hover-trigger">
-                Voir les Apps <span class="ml-2">→</span>
-            </a>
+            <a href="#contact" class="btn-minimal hover-trigger">Voir les Apps <span class="ml-2">→</span></a>
         </div>
     </section>
 
-    <!-- 4. CONTACT -->
-    <section id="contact">
-        <div class="spline-full opacity-40 z-0">
-            <iframe src="https://my.spline.design/3dglobe-jueVvkSxDBse23vE0dXVi9u2/" loading="lazy"></iframe>
-        </div>
-
-        <div class="form-card hover-trigger relative z-10" data-tilt>
-            <h2 class="text-4xl md:text-5xl font-bold mb-2 font-['Syncopate'] text-center">CONTACT</h2>
-            <p class="text-gray-400 text-center mb-10 text-xs tracking-[0.2em] uppercase">Initialiser la collaboration</p>
+    <!-- 4. CONTACT (SPLIT: FORMULAIRE GAUCHE / 3D DROITE) -->
+    <section id="contact" class="split-section">
+        <div class="col-text">
+            <h2 class="big-title">CONTACT</h2>
+            <p class="description">Initialiser la collaboration. Parlez-nous de votre vision.</p>
             
-            <form onsubmit="return false">
+            <form onsubmit="return false" class="w-full max-w-md">
                 <input type="text" class="clean-input hover-trigger" placeholder="NOM OU SOCIÉTÉ" required>
                 <input type="email" class="clean-input hover-trigger" placeholder="EMAIL PROFESSIONNEL" required>
                 <input type="text" class="clean-input hover-trigger" placeholder="TYPE DE PROJET" required>
                 <button class="btn-send hover-trigger">ENVOYER</button>
             </form>
         </div>
+        
+        <div class="col-3d">
+            <iframe src="https://my.spline.design/3dglobe-jueVvkSxDBse23vE0dXVi9u2/" loading="lazy"></iframe>
+        </div>
     </section>
 
-    <!-- 5. FOOTER -->
-    <footer>
-        <div class="footer-content">
+    <!-- FOOTER -->
+    <footer style="padding: 60px 8%; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="footer-content flex justify-between flex-wrap gap-10">
             <div class="max-w-xs">
-                <div class="text-2xl font-bold font-['Syncopate'] text-white mb-4">JAAD</div>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Agence digitale nouvelle génération spécialisée dans les expériences immersives WebGL et le développement mobile haut de gamme.
-                </p>
+                <div class="text-2xl font-bold font-['Syncopate'] mb-4">JAAD</div>
+                <p class="text-gray-500 text-sm">Agence digitale spécialisée WebGL & Mobile.</p>
             </div>
-            
             <div>
-                <h4 class="font-['Syncopate'] text-sm text-white mb-6">SUIVEZ-NOUS</h4>
-                <div class="social-icons">
-                    <a href="#" class="social-btn hover-trigger"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-btn hover-trigger"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-btn hover-trigger"><i class="fab fa-twitter"></i></a>
+                <h4 class="font-['Syncopate'] text-sm mb-6">SUIVEZ-NOUS</h4>
+                <div class="social-icons flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition hover-trigger"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition hover-trigger"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-black transition hover-trigger"><i class="fab fa-twitter"></i></a>
                 </div>
             </div>
-
             <div>
-                <h4 class="font-['Syncopate'] text-sm text-white mb-6">LÉGAL</h4>
+                <h4 class="font-['Syncopate'] text-sm mb-6">LÉGAL</h4>
                 <ul class="space-y-2 text-sm text-gray-500">
-                    <li><a href="#" class="hover:text-purple-400 transition hover-trigger">Mentions Légales</a></li>
-                    <li><a href="#" class="hover:text-purple-400 transition hover-trigger">Politique de Confidentialité</a></li>
-                    <li><a href="#" class="hover:text-purple-400 transition hover-trigger">CGV</a></li>
+                    <li><a href="#" class="hover:text-white transition hover-trigger">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-white transition hover-trigger">Confidentialité</a></li>
                 </ul>
             </div>
         </div>
-        
-        <div class="mt-20 pt-10 border-t border-white/5 flex justify-between text-xs text-gray-600 uppercase tracking-widest">
+        <div class="mt-10 pt-10 border-t border-white/5 flex justify-between text-xs text-gray-600 uppercase tracking-widest">
             <span>© 2024 JAAD STUDIO.</span>
             <span>Made in Galaxy.</span>
         </div>
     </footer>
 
-    <!-- Back to Top -->
-    <div id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white cursor-pointer z-50 opacity-0 translate-y-4 transition-all hover:bg-white hover:text-black" onclick="window.scrollTo(0,0)">↑</div>
-
     <script>
-        // --- LOADER ---
-        window.addEventListener('load', () => { setTimeout(() => { document.body.classList.add('loaded'); }, 2000); });
+        // LOADER
+        window.addEventListener('load', () => { setTimeout(() => { document.body.classList.add('loaded'); }, 1500); });
 
-        // --- SCROLL PROGRESS ---
-        window.addEventListener('scroll', () => {
-            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-            
-            // Back to top
-            const backToTop = document.getElementById('back-to-top');
-            if (winScroll > 500) {
-                backToTop.style.opacity = 1;
-                backToTop.style.transform = 'translateY(0)';
-            } else {
-                backToTop.style.opacity = 0;
-                backToTop.style.transform = 'translateY(20px)';
-            }
-        });
-
-        // --- CUSTOM CURSOR ---
+        // CURSOR
         const cursorDot = document.querySelector('.cursor-dot');
         const cursorOutline = document.querySelector('.cursor-outline');
         window.addEventListener('mousemove', (e) => {
-            const posX = e.clientX; const posY = e.clientY;
-            cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
-            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+            cursorDot.style.left = `${e.clientX}px`; cursorDot.style.top = `${e.clientY}px`;
+            cursorOutline.animate({ left: `${e.clientX}px`, top: `${e.clientY}px` }, { duration: 500, fill: "forwards" });
         });
         document.querySelectorAll('.hover-trigger').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // --- PARALLAX MOUSE EFFECT ---
-        document.addEventListener('mousemove', (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            document.getElementById('nebula-layer').style.transform = `translate(${x}px, ${y}px)`;
-        });
+        // MENU TOGGLE
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            if(menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                menu.classList.add('open');
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        }
 
-        // --- 3D TILT EFFECT (Vanilla JS Implementation) ---
-        document.querySelectorAll('[data-tilt]').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
-                const rotateY = ((x - centerX) / centerX) * 10;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-            });
-        });
-
-        // --- BACKGROUND STARS ---
+        // STARS
         const starsContainer = document.getElementById('stars-container');
         for(let i=0; i<150; i++){
             const star = document.createElement('div');
@@ -501,14 +398,7 @@
             starsContainer.appendChild(star);
         }
 
-        // --- MENU MOBILE ---
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            if(menu.classList.contains('open')) menu.classList.remove('open');
-            else menu.classList.add('open');
-        }
-
-        // --- ACTIVE SCROLL LINK ---
+        // ACTIVE LINK
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav-link');
         const observer = new IntersectionObserver((entries) => {
