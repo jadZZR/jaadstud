@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JAAD | Digital Experience Agency</title>
+    <title>JAAD | Agence Créative de Sites, Apps & E-learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,7 +11,7 @@
 
         :root {
             --accent: #d8b4fe;
-            --accent-glow: rgba(216, 180, 254, 0.3);
+            --accent-glow: rgba(216, 180, 254, 0.4);
             --bg: #000000;
             --border: rgba(255, 255, 255, 0.08);
         }
@@ -23,7 +23,13 @@
             overflow-x: hidden; 
             background-color: #000; 
         }
-        body { background-color: var(--bg); color: #fff; font-family: 'Outfit', sans-serif; line-height: 1.6; transition: direction 0.5s ease; }
+        body { 
+            background-color: transparent; /* Fond transparent pour voir la galaxie */
+            color: #fff; 
+            font-family: 'Outfit', sans-serif; 
+            line-height: 1.6; 
+            transition: direction 0.5s ease; 
+        }
 
         /* Support pour l'Arabe (RTL) */
         [dir="rtl"] { text-align: right; }
@@ -33,12 +39,46 @@
         [dir="rtl"] .whatsapp-btn { left: auto; right: 35px; flex-direction: row-reverse; }
         [dir="rtl"] .lang-fixed-container { left: auto; right: 30px; }
 
+        /* --- FOND GALAXIE ANIMÉ (FIX VISIBILITÉ) --- */
+        #stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+            background: #000; /* Fond noir de base */
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #fff, 0 0 10px var(--accent); /* Éclat des étoiles */
+            animation: twinkle var(--duration) infinite ease-in-out, drift var(--move-duration) infinite linear;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        @keyframes drift {
+            from { transform: translateY(0) translateX(0); }
+            to { transform: translateY(-100vh) translateX(-20vw); }
+        }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; transition: 0.3s; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-        section { scroll-margin-top: 50px; }
+        section { 
+            scroll-margin-top: 50px; 
+            background: transparent !important; /* Force la transparence pour voir le fond */
+        }
 
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
@@ -51,7 +91,7 @@
         }
         .loader-content { text-align: center; }
         .loader-logo {
-            font-family: 'Syncopate', sans-serif; font-size: clamp(2rem, 8vw, 4rem); font-weight: 700;
+            font-family: 'Syncopate', sans-serif; font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 700;
             letter-spacing: 15px; color: transparent; -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
             position: relative; margin-bottom: 20px;
         }
@@ -68,64 +108,35 @@
 
         /* --- SÉLECTEUR DE LANGUE FIXE --- */
         .lang-fixed-container {
-            position: fixed;
-            top: 35px;
-            left: 30px;
-            z-index: 100000;
-            display: flex;
-            background: rgba(10, 10, 15, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border);
-            padding: 4px;
-            border-radius: 100px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: fixed; top: 35px; left: 30px; z-index: 100000; display: flex;
+            background: rgba(10, 10, 15, 0.6); backdrop-filter: blur(20px); border: 1px solid var(--border);
+            padding: 4px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .lang-fixed-opt {
-            font-size: 0.65rem;
-            font-weight: 700;
-            padding: 8px 14px;
-            color: rgba(255,255,255,0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 50px;
-            text-decoration: none;
-        }
+        .lang-fixed-opt { font-size: 0.65rem; font-weight: 700; padding: 8px 14px; color: rgba(255,255,255,0.4); transition: 0.3s; border-radius: 50px; text-decoration: none; }
         .lang-fixed-opt:hover { color: white; background: rgba(255,255,255,0.05); }
-        .lang-fixed-opt.active {
-            color: #000;
-            background: white;
-            box-shadow: 0 0 15px rgba(255,255,255,0.2);
-        }
+        .lang-fixed-opt.active { color: #000; background: white; box-shadow: 0 0 15px rgba(255,255,255,0.2); }
 
         /* --- NAVIGATION HUD --- */
         nav {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
             z-index: 100000; background: rgba(10, 10, 15, 0.6); 
             backdrop-filter: blur(30px); border: 1px solid var(--border); 
-            padding: 6px 8px; border-radius: 100px;
-            display: flex; align-items: center; 
+            padding: 6px 8px; border-radius: 100px; display: flex; align-items: center; 
             box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
         .logo-box { padding: 0 25px; border-right: 1px solid rgba(255,255,255,0.08); margin-right: 8px; display: flex; align-items: center; }
         .logo { font-family: 'Syncopate'; font-weight: 700; color: white; letter-spacing: 2px; text-decoration: none; font-size: 0.8rem; }
-        
         .nav-links { display: flex; gap: 2px; align-items: center; }
-        .nav-link {
-            color: rgba(255,255,255,0.4); padding: 10px 18px; border-radius: 50px;
-            font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
-            transition: 0.3s; text-decoration: none;
-        }
+        .nav-link { color: rgba(255,255,255,0.4); padding: 10px 18px; border-radius: 50px; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600; transition: 0.3s; text-decoration: none; }
         .nav-link:hover { color: white; background: rgba(255,255,255,0.05); }
         .nav-link.active { color: #000; background: white; box-shadow: 0 0 25px rgba(255,255,255,0.3); }
 
         .hamburger { 
-            display: none; position: fixed; top: 35px; right: 30px; 
-            z-index: 100001; color: white; font-size: 1.5rem; cursor: pointer;
-            background: rgba(255,255,255,0.05); width: 50px; height: 50px;
-            border-radius: 50%; align-items: center; justify-content: center;
-            border: 1px solid var(--border); backdrop-filter: blur(10px);
+            display: none; position: fixed; top: 35px; right: 30px; z-index: 100001; color: white; font-size: 1.5rem; cursor: pointer;
+            background: rgba(255,255,255,0.05); width: 50px; height: 50px; border-radius: 50%; align-items: center; justify-content: center; border: 1px solid var(--border); backdrop-filter: blur(10px);
         }
 
-        /* --- WHATSAPP & SOUND --- */
+        /* --- WHATSAPP --- */
         .whatsapp-btn { position: fixed; bottom: 35px; left: 35px; z-index: 99999; display: flex; align-items: center; gap: 12px; text-decoration: none; }
         .wa-icon-box { width: 55px; height: 55px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.6rem; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3); transition: 0.4s; }
         .wa-text { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 16px; border-radius: 50px; color: white; font-size: 0.75rem; font-weight: 500; letter-spacing: 1px; opacity: 0; transform: translateX(-10px); transition: 0.4s; pointer-events: none; }
@@ -133,9 +144,9 @@
         .whatsapp-btn:hover .wa-text { opacity: 1; transform: translateX(0); }
 
         /* --- GRILLE 50/50 --- */
-        .section-grid { display: flex; width: 100vw; min-height: 100vh; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; background: #000; }
+        .section-grid { display: flex; width: 100vw; min-height: 100vh; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; background: transparent; }
         .col-text { width: 50%; display: flex; flex-direction: column; justify-content: center; padding: 120px 10% 80px; z-index: 10; }
-        .col-spline { width: 50%; height: 100vh; position: relative; overflow: hidden; background: #000; }
+        .col-spline { width: 50%; height: 100vh; position: relative; overflow: hidden; background: transparent; }
         .col-spline iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; background: transparent; }
 
         /* --- TYPO --- */
@@ -179,6 +190,9 @@
     </style>
 </head>
 <body>
+
+    <!-- FOND GALAXIE ANIMÉ -->
+    <div id="stars-container"></div>
 
     <!-- LOADER -->
     <div id="loader">
@@ -231,11 +245,11 @@
     </div>
 
     <!-- 1. ACCUEIL -->
-    <section id="accueil" style="height: 100vh; width: 100%; background: #000;">
+    <section id="accueil" style="height: 100vh; width: 100%; background: transparent;">
         <iframe src="https://my.spline.design/r4xbot-wyF3YgMCHK0WZiM5WExlbOBt/" style="width:100%; height:100%; border:none;"></iframe>
     </section>
 
-    <!-- 2. EXPERTISE : CE QUE NOUS CRÉONS -->
+    <!-- 2. EXPERTISE -->
     <section id="expertise" class="section-grid">
         <div class="col-text reveal">
             <h2 class="big-title" data-i18n="exp-title">Créateurs de<br><span class="outline">Futur Digital</span></h2>
@@ -263,7 +277,7 @@
         </div>
     </section>
 
-    <!-- 3. SOLUTIONS : ACCOMPAGNEMENT DE A À Z -->
+    <!-- 3. SOLUTIONS -->
     <section id="solutions" class="section-grid" style="flex-direction: row-reverse;">
         <div class="col-text reveal">
             <h2 class="big-title" data-i18n="sol-title">Suivi de<br><span class="outline">A à Z</span></h2>
@@ -287,7 +301,7 @@
         </div>
     </section>
 
-    <!-- 4. PROJETS : NOS RÉALISATIONS MOBILES -->
+    <!-- 4. PROJETS -->
     <section id="projets" class="section-grid">
         <div class="col-text reveal">
             <h2 class="big-title" data-i18n="proj-title">Applications<br><span class="outline">Mobiles</span></h2>
@@ -310,7 +324,7 @@
         </div>
     </section>
 
-    <!-- 5. CONTACT : SIMPLE ET DIRECT -->
+    <!-- 5. CONTACT -->
     <section id="contact" class="section-grid" style="flex-direction: row-reverse;">
         <div class="col-text reveal">
             <h2 class="big-title" data-i18n="cont-title">CONTACT</h2>
@@ -377,15 +391,15 @@
             es: {
                 "nav-home": "Inicio", "nav-expertise": "Pericia", "nav-solutions": "Soluciones", "nav-projects": "Aplicaciones", "nav-contact": "Contacto",
                 "exp-title": "Creadores de<br><span class='outline'>Futuro Digital</span>",
-                "exp-desc": "JAAD es su socio experto en la creación de soluciones digitales a medida. Damos vida a sus proyectos más ambiciosos a través de tres especialidades principales:",
+                "exp-desc": "JAAD es su socio experto en la création de soluciones digitales a medida. Damos vida a sus proyectos más ambiciosos a través de tres especialidades principales:",
                 "serv-web": "SITIOS WEB Y E-COMMERCE", "serv-app": "APLICACIONES MÓVILES", "serv-elearn": "PLATAFORMAS E-LEARNING",
                 "exp-btn": "NUESTRO APOYO",
                 "sol-title": "Soporte<br><span class='outline'>Integral</span>",
-                "sol-desc": "Porque un proyecto digital est una ascensión, nunca te dejamos solo. Desde la idea inicial hasta el seguimiento posterior al lanzamiento, JAAD te apoya en cada etapa de tu éxito:",
+                "sol-desc": "Porque un proyecto digital est una ascensión, nunca te dejamos solo. Desde la idea inicial hasta le seguimiento posterior al lanzamiento, JAAD te apoya en cada etapa de tu éxito:",
                 "sol-seo": "VISIBILIDAD (SEO / SEA)", "sol-3d": "INMERSIÓN Y DISEÑO 3D", "sol-partner": "Un socio de principio a fin.",
                 "proj-title": "Aplicaciones<br><span class='outline'>Móviles</span>",
-                "proj-desc": "Diseñamos aplicaciones móviles de alto rendimiento, listas para conquistar el mercado. Fluidez perfecta para una experiencia de usuario inolvidable en todas las tiendas.",
-                "cont-title": "CONTACTO", "cont-desc": "¿Listo para transformar su visión en éxito digital? Describe tus necesidades, respondemos rápido.",
+                "proj-desc": "Diseñamos aplicaciones mobiles de alto rendimiento, listas para conquistar le mercado. Fluidez perfecta para una experiencia de usuario inolvidable en todas las tiendas.",
+                "cont-title": "CONTACTO", "cont-desc": "¿Listo para transformar su vision en éxito digital? Describe tus necesidades, respondemos rápido.",
                 "cont-ph-name": "NOMBRE O EMPRESA", "cont-ph-email": "CORREO DE CONTACTO", "cont-ph-type": "TIPO DE PROYECTO (SITIO, APP...)",
                 "cont-btn": "ENVIAR", "wa-help": "¿NECESITAS AYUDA?", "foot-rights": "© 2024 JAAD STUDIO. EXPERTOS DIGITALES."
             },
@@ -424,8 +438,35 @@
             if(document.getElementById('mobile-menu').style.display === 'flex') toggleMenu();
         }
 
+        // --- GALAXY STARS GENERATION (FIX VISIBILITÉ) ---
+        function initStars() {
+            const container = document.getElementById('stars-container');
+            container.innerHTML = ''; // Nettoyage
+            const starCount = 180; 
+            for(let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Positionnement sur une zone plus large pour la dérive
+                star.style.top = `${Math.random() * 150 - 25}%`; 
+                star.style.left = `${Math.random() * 150 - 25}%`;
+                
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.setProperty('--move-duration', `${Math.random() * 120 + 60}s`);
+                star.style.animationDelay = `${Math.random() * 5}s`;
+                
+                container.appendChild(star);
+            }
+        }
+
         // --- LOADER ---
-        window.addEventListener('load', () => { setTimeout(() => { document.body.classList.add('loaded'); }, 2000); });
+        window.addEventListener('load', () => { 
+            initStars();
+            setTimeout(() => { document.body.classList.add('loaded'); }, 2000); 
+        });
 
         // --- CUSTOM CURSOR ---
         const cursorDot = document.querySelector('.cursor-dot');
